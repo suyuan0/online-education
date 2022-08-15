@@ -38,6 +38,7 @@
 			<scroll-view lower-threshold="150" @scrolltolower="handlerChangeCurrent" class="scroll-wrap"
 				scroll-x="true">
 				<view class="item" v-for="item in puzzleListData" :key="item.id">
+					<text class="tip">{{item.type==='column' ? '专栏' : '图文'}}</text>
 					<image :src="item.cover"></image>
 					<view class="content">
 						<text class="title">{{item.title}}</text>
@@ -53,8 +54,23 @@
 		<!-- 最新列表 -->
 		<view class="latestList">
 			<view class="title">
-				<text class="lefft">最新列表</text>
+				<text class="left">最新列表</text>
 				<text class="right">查看更多</text>
+			</view>
+			<view class="main">
+				<view class="item" v-for="item in latestListData.data" :key="item.id">
+					<view class="left">
+						<image :src="item.cover" mode=""></image>
+						<text class="tip">{{item.type === "media" ? '图文' : '视频'}}</text>
+					</view>
+					<view class="right">
+						<text class="title">{{item.title}}</text>
+						<text class="price">
+							￥{{item.price}}
+							<text>￥{{item.t_price}}</text>
+						</text>
+					</view>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -76,6 +92,8 @@
 	const swiperData = ref([])
 	// 分类数据
 	const classificationData = ref([])
+	// 最新列表
+	const latestListData = ref([])
 	const getData = async () => {
 		const {
 			data
@@ -87,6 +105,9 @@
 		swiperData.value = data.find(v => v.type === 'swiper')
 		// 分类数据
 		classificationData.value = data.find(v => v.type === 'icons')
+		// 最新列表
+		latestListData.value = data.find(v => v.type === 'list')
+		// console.log(latestListData.value)
 	}
 	getData()
 	// 优惠券
@@ -238,6 +259,18 @@
 
 			.item {
 				display: inline-block;
+				position: relative;
+
+				.tip {
+					position: absolute;
+					z-index: 100;
+					background: rgba(0, 0, 0, 0.2);
+					color: #fff;
+					font-size: 20rpx;
+					top: 130rpx;
+					right: 20rpx;
+					padding: 5rpx;
+				}
 
 				image {
 					width: 400rpx;
@@ -270,8 +303,74 @@
 	// 最新列表
 	.latestList {
 		padding: 20rpx 0 100rpx 0;
-		.latestList{
-			
+
+		.title {
+			padding: 10rpx;
+			display: flex;
+			justify-content: space-between;
+
+			.left {
+				font-weight: bold;
+				font-size: 35rpx;
+			}
+
+			.right {
+				font-size: 20rpx;
+				color: #bdbab6;
+				line-height: 80rpx;
+			}
+		}
+
+		.main {
+			.item {
+				display: flex;
+				justify-content: space-around;
+				margin-bottom: 20rpx;
+
+				.left {
+					margin-right: 15rpx;
+					position: relative;
+
+					image {
+						width: 300rpx;
+						height: 170rpx;
+					}
+
+					.tip {
+						position: absolute;
+						bottom: 10rpx;
+						right: 10rpx;
+						background: rgba(0, 0, 0, 0.2);
+						color: #fff;
+					}
+
+				}
+
+				.right {
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					width: 400rpx;
+
+					.title {
+						display: inline-block;
+						text-overflow: ellipsis;
+						overflow: hidden;
+						white-space: nowrap;
+						-o-text-overflow: ellipsis;
+					}
+
+					.price {
+						color: #f00;
+						font-size: 30rpx;
+
+						text {
+							color: #bdbab6;
+							font-size: 20rpx;
+						}
+					}
+				}
+			}
 		}
 	}
 </style>
