@@ -1,0 +1,21 @@
+/* 主背景色 */
+.bg-main {
+	background: #5ccc84;
+}
+
+/* 主文字色 */
+.text-main {
+	color: rgb(92, 204, 132);
+}
+
+page{
+	height: 100%;
+}
+
+.container{
+	height: 100%;
+}
+
+image{
+	width: 100%;
+}
