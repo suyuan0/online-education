@@ -54,5 +54,16 @@
 			"text": "我的",
 			"pagePath": "pages/my/my"
 		}]
-	}
+	},
+	"subPackages": [{
+		"root": "subPackages",
+		"pages": [{
+			"path": "login/login",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}]
+	}]
 }

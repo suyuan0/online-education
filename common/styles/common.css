@@ -14,6 +14,8 @@ page{
 
 .container{
 	height: 100%;
+	/* margin-left: -6rpx; */
+	padding-left: 15rpx;
 }
 
 image{

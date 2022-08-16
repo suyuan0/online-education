@@ -19,5 +19,6 @@
 	@import '@/common/styles/animate.min.css';
 	@import '@/common/styles/common.css';
 	@import '@/common/styles/free.css';
-	@import '@/common/iconfont/iconfont.css'
+	@import '@/common/iconfont/iconfont.css';
+	@import '@/common/font.css';
 </style>
