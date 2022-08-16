@@ -80,6 +80,9 @@
 	import {
 		ref
 	} from 'vue'
+	import {
+		onPullDownRefresh
+	} from '@dcloudio/uni-app'
 	// 轮播图
 	import {
 		getIndexDataAPI,
@@ -123,6 +126,7 @@
 	const puzzleListData = ref([])
 	// 页码
 	const puzzleCurrent = ref(1)
+	const puzzleCount = ref(0)
 	const getPuzzle = async () => {
 		const {
 			data: {
@@ -131,14 +135,25 @@
 			}
 		} = await doughAPI(puzzleCurrent.value)
 		// console.log(rows)
+		puzzleCount.value = count
 		puzzleListData.value = [...puzzleListData.value, ...rows]
 	}
 	getPuzzle()
 	const handlerChangeCurrent = async () => {
+		const nums = puzzleCurrent.value * 10
+		if (nums >= puzzleCount.value) return
 		puzzleCurrent.value++
 		getPuzzle()
 	}
+	// 下拉刷新
+	onPullDownRefresh(async () => {
+		getData()
+		getCouponData()
+		getPuzzle()
+		uni.stopPullDownRefresh()
+	})
 </script>
+
 
 <style lang="scss" scoped>
 	.container {
