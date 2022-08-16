@@ -8,7 +8,7 @@
 	<view class="header bg-main animate__animated animate__fadeInDown">
 
 		<!-- 头像 -->
-		<view class="info" @click="handleGoLogin" >
+		<view class="info" @click="handleGoLogin">
 			<view class="avatar">
 				<image src="http://upload.9yuecloud.com:8887/upload/yhlx4DRQSGzLI8Up31srHrH4.JPG" mode="widthFix">
 				</image>
@@ -47,8 +47,10 @@
 		iconsList,
 		myList
 	} from './options.js'
-	import {navigateTo} from '@/utils/vavigate.js'
-	const handleGoLogin = ()=>{
+	import {
+		navigateTo
+	} from '@/utils/navigate.js'
+	const handleGoLogin = () => {
 		navigateTo('/subPackages/login/login')
 	}
 </script>
@@ -63,6 +65,7 @@
 		padding: 0 20rpx;
 		z-index: 1000;
 		position: relative;
+
 		.title {
 			font-size: 40rpx;
 			font-weight: bold;
@@ -76,6 +79,7 @@
 		position: relative;
 		padding-top: 50rpx;
 		box-sizing: border-box;
+
 		.info {
 			padding-left: 50rpx;
 			height: 125rpx;

@@ -9,27 +9,43 @@ const request = (url, method = 'GET', data = {}) => {
 			method,
 			data,
 			header: {
-				appId: "bd9d01ecc75dbbaaefce"
+				appId: "bd9d01ecc75dbbaaefce",
 			},
-			timeout:5000,
+			timeout: 5000,
 			success({
 				statusCode,
 				data
 			}) {
+				_endLoading()
+				if (statusCode !== 200) return _showErrorMsg(data.data)
 				if (statusCode === 200) {
-					{
-						reslove(data)
-					}
+					reslove(data)
 				}
 			},
 			fail(err) {
-				reject(err)
+				reject(new Error(err))
+				_endLoading()
 			},
-			complete() {
-				uni.hideLoading()
-			}
+
 		})
 	})
+}
+
+// 失败信息处理
+const _showErrorMsg = (msg) => {
+	if(msg.includes('China Phone Number')) msg = '请输入正确的手机号'
+	uni.showToast({
+		icon: 'none',
+		title: _ErrMsg[msg] || msg
+	})
+}
+
+// 关闭loading
+const _endLoading = () => uni.hideLoading()
+
+// 失败信息
+const _ErrMsg = {
+	'[`密码`、`确认密码`] 参数必须是相等的': '两次密码不一致'
 }
 
 export default request

@@ -64,6 +64,13 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "bind-phone/bind-phone",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
 		}]
 	}]
 }
