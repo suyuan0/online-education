@@ -3,26 +3,29 @@
 		<!-- header -->
 		<!-- 头 -->
 		<view class="header">
-			<text class="iconfont icon-fanhuijiantou"></text>
-			<text class="setting">我的设置</text>
+			<text class="iconfont icon-fanhuijiantou" @click="navigateBack()" ></text>
+			<text class="setting">编辑资料</text>
 		</view>
 		<!-- main -->
 		<view class="main">
-			<view class="item">
+			<view class="item" @click="uploadAvatar" >
 				<text>头像</text>
-				<image src="http://demo-mp3.oss-cn-shenzhen.aliyuncs.com/egg-edu-demo/615e8cdb4beffde65090.JPG" mode=""></image>
+				<view class="image">
+					<image v-if="userInfo.user" :src="userInfo.avatar"></image>
+					<view class="empty" v-else></view>
+				</view>
 			</view>
 			<view class="item">
 				<text>昵称</text>
-				<input type="text" value="123">
+				<input type="text" v-model="userInfo.nickname" placeholder="未填写">
 			</view>
 			<view class="item">
 				<text>性别</text>
-				<text>你猜</text>
+				<text>{{userInfo.sex}}</text>
 			</view>
 			<view class="item">
 				<text>手机</text>
-				<text>170****6012</text>
+				<text>{{userInfo.phone}}</text>
 			</view>
 			<view class="btn bg-main text-white flex justify-center align-center rounded mt-2">
 				提交
@@ -31,13 +34,20 @@
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-
-			};
-		}
+<script setup>
+	import {navigateBack} from '@/utils/navigate.js'
+	import {getItem} from '@/utils/storage.js'
+	import {USERINFO} from '@/utils/constant.js'
+	import {reactive,ref} from 'vue'
+	import {uploadFile} from '@/utils/upload.js'
+	let userInfo = reactive({})
+	const getUserInfo = ()=>{
+		userInfo = getItem(USERINFO)
+		console.log(userInfo);
+	}
+	getUserInfo()
+	const uploadAvatar = ()=>{
+		uploadFile()
 	}
 </script>
 
@@ -55,16 +65,29 @@
 		}
 	}
 	.main{
-		padding: 0 30rpx;
 		.item{
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
 			height: 100rpx;
-			image{
-				width: 100rpx;
-				height: 100rpx;
+		padding: 0 30rpx;
+			&:nth-of-type(1):active{
+				background: #f1f1f1;
+			}
+			.image{
+				width: 80rpx;
+				height: 80rpx;
 				border-radius: 50%;
+				overflow: hidden;
+				image{
+					width: 100%;
+					height: 100%;
+				}
+				.empty{
+					width: 100%;
+					height: 100%;
+					background: #f8f9fa;
+				}
 			}
 			input{
 				text-align: right;

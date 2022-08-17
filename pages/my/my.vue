@@ -64,10 +64,11 @@
 		getItem
 	} from '@/utils/storage.js'
 	import {
-		USERINFO
+		USERINFO,TOKEN
 	} from '@/utils/constant.js'
 	// 去设置页
 	const toSetting = () => navigateTo('/subPackages/setting/setting')
+	const token = ref('')
 	// 是否跳转登录
 	const isToLogin = ref(false)
 	const handleGoLogin = () => {
@@ -79,8 +80,11 @@
 	const userInfo = ref({})
 	const getUserInfo = () => {
 		const res = getItem(USERINFO)
-		if (res.username) {
+		token.value = getItem(TOKEN)
+		if (token.value) {
 			isToLogin.value = true
+		}else{
+			isToLogin.value = false
 		}
 		// console.log(res);
 		userInfo.value = res
