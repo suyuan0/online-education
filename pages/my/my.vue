@@ -2,20 +2,23 @@
 	<!-- 标题导航 -->
 	<view class="title-nav bg-main">
 		<text class="title">我的</text>
-		<text class="iconfont icon-gengduo"></text>
+		<text class="iconfont icon-gengduo" @click="toSetting"></text>
 	</view>
 	<!-- 顶部 -->
 	<view class="header bg-main animate__animated animate__fadeInDown">
-
 		<!-- 头像 -->
 		<view class="info" @click="handleGoLogin">
 			<view class="avatar">
-				<image src="http://upload.9yuecloud.com:8887/upload/yhlx4DRQSGzLI8Up31srHrH4.JPG" mode="widthFix">
+				<image :src="userInfo.avatar || 'http://upload.9yuecloud.com:8887/upload/yhlx4DRQSGzLI8Up31srHrH4.JPG'"
+					mode="widthFix">
 				</image>
 			</view>
 			<view class="content">
-				<text>立即登录</text>
-				<text class="con-2">登录解锁更多功能</text>
+				<text>{{userInfo.username || '立即登录'}}</text>
+				<text class="con-2">{{desc}}</text>
+			</view>
+			<view class="right-icon" v-if="userInfo && userInfo.username">
+				<text @click="navigateTo('/subPackages/user-info/user-info')" class="iconfont icon-fenlei"></text>
 			</view>
 		</view>
 		<!-- 导航 -->
@@ -30,8 +33,8 @@
 	</view>
 	<!-- 主区域 -->
 	<view class="main animate__animated animate__fadeInDown">
-		<view class="item" v-for="item in myList" :key="item.id">
-			<view class="left">
+		<view class="item" v-for="item in myList" :key="item.id"  @click="handlerSelect(item)">
+			<view class="left"> 
 				<text class="iconfont icon" :class="item.icon"></text>
 				<text class="title">{{item.title}}</text>
 			</view>
@@ -44,14 +47,62 @@
 
 <script setup>
 	import {
+		ref,
+		computed
+	} from 'vue'
+	import {
+		onShow
+	} from '@dcloudio/uni-app'
+	import {
 		iconsList,
 		myList
 	} from './options.js'
 	import {
 		navigateTo
 	} from '@/utils/navigate.js'
+	import {
+		getItem
+	} from '@/utils/storage.js'
+	import {
+		USERINFO
+	} from '@/utils/constant.js'
+	// 去设置页
+	const toSetting = () => navigateTo('/subPackages/setting/setting')
+	// 是否跳转登录
+	const isToLogin = ref(false)
 	const handleGoLogin = () => {
-		navigateTo('/subPackages/login/login')
+		if (!isToLogin.value) {
+			navigateTo('/subPackages/login/login')
+		}
+	}
+	// 获取用户信息
+	const userInfo = ref({})
+	const getUserInfo = () => {
+		const res = getItem(USERINFO)
+		if (res.username) {
+			isToLogin.value = true
+		}
+		// console.log(res);
+		userInfo.value = res
+	}
+	getUserInfo()
+	const desc = computed(() => {
+		if (userInfo.value) {
+			return userInfo.value.desc || '暂无描述'
+		} else {
+			return '登录解锁更多功能'
+		}
+	})
+	onShow(() => {
+		getUserInfo()
+	})
+	const handlerSelect = (item) => {
+		// console.log(item);
+		switch (item.title) {
+			case '设置':
+				toSetting()
+				break;
+		}
 	}
 </script>
 
@@ -86,6 +137,8 @@
 			display: flex;
 			align-items: center;
 
+			position: relative;
+
 			.avatar {
 				box-sizing: border-box;
 				border-radius: 50%;
@@ -97,6 +150,12 @@
 				image {
 					width: 100%;
 				}
+			}
+
+			.right-icon {
+				color: #fff;
+				position: absolute;
+				right: 50rpx;
 			}
 
 			.content {

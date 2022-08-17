@@ -25,7 +25,7 @@
 					{{ registerShow ?'注册':'登录'}}
 				</view>
 				<view class="register-container">
-					<text class="register text-main" @click="registerShow=!registerShow">
+					<text class="register text-main" @click="registerShow=!registerShow;isCheck=false">
 						{{registerShow ? '去登陆' :'注册账号'}}
 					</text>
 					<text class="forget">忘记密码?</text>
@@ -61,7 +61,9 @@
 		registerAPI
 	} from '@/api/login'
 	import {
-		navigateBack,navigateTo
+		navigateBack,
+		navigateTo,
+		switchTab
 	} from '@/utils/navigate.js'
 	import {
 		ref,
@@ -81,15 +83,19 @@
 	const handlerSubmit = async () => {
 		await registerShow.value ? handlerRegister() : handlerLogin()
 	}
-	// 6666666666666
+	// 6666666666666  777777777
 	// 登录
 	const handlerLogin = async () => {
 		try {
 			if (!isCheck.value) return showToast('请先阅读并同意用户协议&隐私声明')
 			const res = await loginAPI(formModel)
-			setInfo(res.data.token,res.data)
+			setInfo(res.data.token, res.data)
 			showToast('登录成功')
-			navigateTo('/subPackages/bind-phone/bind-phone')
+			if (res.data.phone) {
+				switchTab('/pages/my/my')
+			} else {
+				navigateTo('/subPackages/bind-phone/bind-phone')
+			}
 		} catch (e) {
 			//TODO handle the exception
 		}

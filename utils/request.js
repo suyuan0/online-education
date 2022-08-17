@@ -1,3 +1,11 @@
+import {
+	getItem
+} from '@/utils/storage.js'
+import {
+	TOKEN
+} from '@/utils/constant.js'
+// 获取token
+const token = getItem(TOKEN) || ''
 const baseURL = 'http://demonuxtapi.dishait.cn/mobile'
 const request = (url, method = 'GET', data = {}) => {
 	uni.showLoading({
@@ -10,6 +18,7 @@ const request = (url, method = 'GET', data = {}) => {
 			data,
 			header: {
 				appId: "bd9d01ecc75dbbaaefce",
+				token: token
 			},
 			timeout: 5000,
 			success({
@@ -33,7 +42,7 @@ const request = (url, method = 'GET', data = {}) => {
 
 // 失败信息处理
 const _showErrorMsg = (msg) => {
-	if(msg.includes('China Phone Number')) msg = '请输入正确的手机号'
+	if (msg.includes('China Phone Number')) msg = '请输入正确的手机号'
 	uni.showToast({
 		icon: 'none',
 		title: _ErrMsg[msg] || msg

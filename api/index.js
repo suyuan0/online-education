@@ -11,8 +11,9 @@ export const couponAPI = () => {
 }
 
 // 拼团列表
-export const doughAPI = (page) => {
-	return request('/group', 'GET', {
-		page
+export const doughAPI = (page, url) => {
+	return request(`/${url}`, 'GET', {
+		page,
+		usable: 1
 	})
 }

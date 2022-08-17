@@ -71,6 +71,21 @@
 					"titleNView": false
 				}
 			}
+		}, {
+			"path": "setting/setting",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		}, {
+			"path": "user-info/user-info",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}]
 	}]
 }

@@ -10,3 +10,10 @@ export const navigateBack = (delta = 1) => {
 		animationType: 'pop-in',
 	})
 }
+
+
+export const switchTab = (url)=>{
+	uni.switchTab({
+		url
+	})
+}

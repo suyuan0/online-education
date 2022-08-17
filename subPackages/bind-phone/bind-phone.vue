@@ -15,12 +15,12 @@
 				</view>
 				<view class="input-wrap">
 					<text class="iconfont icon-mima"></text>
-					<input type="text" placeholder="验证码">
+					<input v-model="formModel.code" type="text" placeholder="验证码">
 					<view @click="sendCode" class="code-wrap bg-main flex justify-center align-center text-white">
 						{{ isSend ? `${count}s` : '发送'}}
 					</view>
 				</view>
-				<view class="bg-main flex justify-center align-center submit rounded text-white">
+				<view @click="handlerBindPhone" class="bg-main flex justify-center align-center submit rounded text-white">
 					绑定
 				</view>
 			</view>
@@ -31,7 +31,7 @@
 <script setup>
 	import {
 		navigateTo,
-		navigateBack
+		navigateBack,switchTab
 	} from '@/utils/navigate.js'
 	import {
 		showToast
@@ -41,13 +41,14 @@
 		reactive
 	} from 'vue'
 	import {
-		getVerificationCode
+		getVerificationCode,bindMobilePhone
 	} from '@/api/phone.js'
 	let timer = ref(null)
 	let count = ref(59)
 	// 表单模型
 	const formModel = reactive({
-		phone: ''
+		phone: '',
+		code:''
 	})
 	// 是否发送验证码
 	const isSend = ref(false)
@@ -66,6 +67,18 @@
 				}
 			}
 		} catch (e) {
+			//TODO handle the exception
+		}
+	}
+	// 绑定手机号
+	const handlerBindPhone = async ()=>{
+		try{
+			const res = await bindMobilePhone(formModel)
+			if(res.msg==='ok'){
+				showToast('绑定成功')
+				switchTab('/pages/my/my')
+			}
+		}catch(e){
 			//TODO handle the exception
 		}
 	}
